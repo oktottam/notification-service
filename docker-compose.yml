@@ -1,0 +1,24 @@
+version: '3.8'
+services:
+  # Cơ sở dữ liệu cho thông báo (NoSQL cho linh hoạt schema)
+  mongodb:
+    image: mongo:latest
+    container_name: fin_buddy_mongo
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo_data:/data/db
+
+  # Trạm trung chuyển tin nhắn (Message Broker)
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: fin_buddy_mq
+    ports:
+      - 5672:5672   # Cổng cho Microservice kết nối
+      - 15672:15672 # Cổng Giao diện quản lý (Management UI)
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+
+volumes:
+  mongo_data:
